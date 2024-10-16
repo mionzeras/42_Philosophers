@@ -1,0 +1,5 @@
+*.o
+*.a
+*.json
+*.txt
+philo
