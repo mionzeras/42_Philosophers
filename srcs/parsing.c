@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:43:56 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/10 21:02:03 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:33:00 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static bool check_input(char **argv)
 	return (true);
 }
 
-bool parse_input(int argc, char **argv)
+void parse_input(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -69,7 +69,11 @@ bool parse_input(int argc, char **argv)
 			Y"Usage: ./philo number_of_philosophers time_to_die time_to_eat"
 			" time_to_sleep [number_of_times_each_philosopher_must_eat]"RST);
 	}
+	if (argc == 6)
+	{
+		if (ft_atol(argv[5]) <= 0)
+			exit_error("Error: Number of meals must be greater than 0");
+	}
 	if (!check_input(argv))
 		exit_error("Error: Arguments must be positive integers");
-	return (true);
 }

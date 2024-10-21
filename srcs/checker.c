@@ -6,93 +6,81 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:51:05 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/16 15:23:46 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:43:02 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*int check_death(t_philo *philo)
+int	finished_meals(t_data *data)
 {
-	if (get_time() - philo->last_meal > philo->data->time_to_die)
+	pthread_mutex_lock(&data->dead_lock);
+	if (data->death_full == 1)
 	{
-		message(philo, "died");
-		pthread_mutex_lock(philo->dead);
+		pthread_mutex_unlock(&data->dead_lock);
 		return (1);
 	}
+	pthread_mutex_unlock(&data->dead_lock);
 	return (0);
 }
 
-int check_meals(t_philo *philo)
+int check_death(t_data *data)
 {
 	int i;
-	int meals;
-	
+
 	i = -1;
-	meals = 0;
-	while (++i < philo->data->nbr_philos)
+	while (++i < data->nbr_philos && data->death_full == 0)
 	{
-		pthread_mutex_lock(philo->meal);
-		if (philo[i].full_dead)
-			meals++;
-		pthread_mutex_unlock(philo->meal);
-	}
-	if (meals == philo->data->nbr_philos)
-	{
-		pthread_mutex_lock(philo->dead);
-		philo->full_dead = true;
-		pthread_mutex_unlock(philo->dead);
-		return (1);
+		pthread_mutex_lock(&data->meal);
+		if (get_time() - data->philos[i].last_meal > data->time_to_die)
+		{
+			message(&data->philos[i], "died");
+			pthread_mutex_lock(&data->dead_lock);
+			data->death_full = 1;
+			pthread_mutex_unlock(&data->dead_lock);
+			return (1);
+		}
+		pthread_mutex_unlock(&data->meal);
 	}
 	return (0);
 }
 
-void *checker(void *arg)
+int check_meals(t_data *data)
 {
-	t_philo *philo;
+	int i;
+	int full_philos;
 
-	philo = (t_philo *)arg;
-	while (1)
+	i = -1;
+	full_philos = 0;
+	while (++i < data->nbr_philos)
 	{
-		if (check_death(philo) || check_meals(philo))
-			return (NULL);
+		pthread_mutex_lock(&data->meal);
+		if (data->philos[i].qtd_meals >= data->max_meals && data->max_meals != -1)
+			full_philos++;
+		pthread_mutex_unlock(&data->meal);
 	}
-	return (NULL);
-}*/
-
-void *checker(void *arg)
-{
-    t_data *data = (t_data *)arg;
-    int i;
-    int full_philos;
-
-    while (1)
-    {
-        i = -1;
-        full_philos = 0;
-        while (++i < data->nbr_philos)
-        {
-            // Checar se o filósofo morreu
-            pthread_mutex_lock(&data->meal);
-            if (get_time() - data->philos[i].last_meal > data->time_to_die)
-            {
-                message(&data->philos[i], "died");
-                pthread_mutex_lock(&data->dead);
-                data->philos[i].full_dead = true;
-                pthread_mutex_unlock(&data->dead);
-                pthread_mutex_unlock(&data->meal);
-                return (NULL);
-            }
-            pthread_mutex_unlock(&data->meal);
-
-            // Checar se todos comeram o máximo de vezes
-            if (data->max_meals != -1 && data->philos[i].qtd_meals >= data->max_meals)
-                full_philos++;
-        }
-        if (full_philos == data->nbr_philos)
-            return (NULL); // Todos comeram o máximo
-        usleep(100); // Evitar sobrecarga da CPU
-    }
-    return (NULL);
+	return (full_philos);
 }
 
+void monitor(t_data *data)
+{
+    int i;
+
+    while (data->death_full == 0)
+    {
+		if (check_death(data) == 1)
+			return ;
+		ft_usleep(9);
+		if (data->max_meals != -1)
+		{
+			i = check_meals(data);
+			if (i == data->nbr_philos)
+			{
+				pthread_mutex_lock(&data->dead_lock);
+				data->death_full = 1;
+				pthread_mutex_unlock(&data->dead_lock);
+				return ;
+			}
+    	}
+	}
+}

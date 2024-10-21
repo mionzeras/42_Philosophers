@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:43:48 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/16 15:24:47 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:44:13 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,50 +30,43 @@ typedef struct s_philo
 {
 	int				id;
 	int				qtd_meals;
+	int				left_fork_id;
+	int				right_fork_id;
 	long			last_meal;
-	bool			full_dead;
-	bool			eating;
 	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*write;
-	pthread_mutex_t	*meal;
-	pthread_mutex_t	*dead;	
 	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data
 {
-	long	nbr_philos;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	max_meals;
+	int		nbr_philos;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		max_meals;
+	int		death_full;
 	long	start_time;
 	pthread_mutex_t	write;
-	pthread_mutex_t	dead;
+	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal;
-	pthread_mutex_t	forks[MAX_PHILOS];
-	struct s_philo	*philos;
+	pthread_mutex_t	*forks;
+	t_philo			*philos;
 }	t_data;
 
 //checker.c
-//int		check_death(t_philo *philo);
-//int		check_meals(t_philo *philo);
-void	*checker(void *arg);
+int		finished_meals(t_data *data);
+int		check_death(t_data *data);
+int 	check_meals(t_data *data);
+void	monitor(t_data *data);
 
 //init.c
-void	init_forks(t_data *data);
-void	init_philos(t_data *data, t_philo *philos);
-void	init_data(t_data *data, char **argv);
-void	init_program(t_data *data, t_philo *philos, char **argv);
-
-//main.c
-int		threads(t_data *data, t_philo *philos);
+int		init_mutexes(t_data *data);
+int		init_philos(t_data *data);
+int		init_data(t_data *data, char **argv);
 
 //parsing.c
 long	ft_atol(const char *str);
-bool	parse_input(int argc, char **argv);
+void	parse_input(int argc, char **argv);
 
 //routine.c
 void	thinking(t_philo *philo);
@@ -85,7 +78,7 @@ void	*routine(void *arg);
 void	message(t_philo *philo, char *str);
 int		ft_usleep(long time);
 long	get_time(void);
-void	free_program(t_data *data);
+int		free_program(t_data *data);
 void	exit_error(char *str);
 
 #endif
