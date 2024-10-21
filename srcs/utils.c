@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:51:17 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:02:44 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 21:23:23 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void message(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(&philo->data->write);
-	if (!finished_meals(philo->data) || str[0] == 'd')
+	if (philo->data->death_full == 0)
 		printf("%ld %d %s\n", get_time() - philo->data->start_time, philo->id, str);
-	if (str[0] != 'd')
-		pthread_mutex_unlock(&philo->data->write);
+	pthread_mutex_unlock(&philo->data->write);
 }
 
 int ft_usleep(long time)
@@ -43,14 +42,13 @@ int free_program(t_data *data)
 {
 	int i;
 
-	ft_usleep(1000);
+	ft_usleep(2000);
 	pthread_mutex_destroy(&data->write);
 	pthread_mutex_destroy(&data->meal);
 	pthread_mutex_destroy(&data->dead_lock);
 	i = -1;
 	while (++i < data->nbr_philos)
 		pthread_mutex_destroy(&data->forks[i]);
-	free(data->forks);
 	free(data->philos);
 	return (0);
 }

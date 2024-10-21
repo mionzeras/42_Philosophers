@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:59:19 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:19:37 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:46:01 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,16 @@ int init_mutexes(t_data *data)
 {
 	int i;
 
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->nbr_philos);
-	if (!data->forks)
-		return (-1);
 	i = -1;
 	while (++i < data->nbr_philos)
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (free(data->forks), -1);
+			return (-1);
 	if (pthread_mutex_init(&data->write, NULL) != 0)
-		return (free(data->forks), -1);
+		return (-1);
 	if (pthread_mutex_init(&data->meal, NULL) != 0)
-		return (free(data->forks), -1);
+		return (-1);
 	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
-		return (free(data->forks), -1);
+		return (-1);
 	return (0);
 }
 
@@ -46,6 +43,7 @@ int init_philos(t_data *data)
 	while (++i < data->nbr_philos)
 	{
 		philos[i].id = i + 1;
+		philos[i].eating = 0;
 		philos[i].qtd_meals = 0;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % data->nbr_philos;

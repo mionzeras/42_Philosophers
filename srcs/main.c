@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:54:28 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:43:24 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:45:55 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int main(int argc, char **argv)
 {
 	t_data	data;
+	pthread_mutex_t forks[MAX_PHILOS];
 	
+	data.forks = forks;
 	parse_input(argc, argv);
 	if (init_data(&data, argv) == -1)
 		exit_error("Error: Data");

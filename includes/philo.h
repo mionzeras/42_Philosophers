@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:43:48 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:44:13 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/21 21:06:05 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 typedef struct s_philo
 {
 	int				id;
+	int				eating;
 	int				qtd_meals;
 	int				left_fork_id;
 	int				right_fork_id;
@@ -54,7 +55,7 @@ typedef struct s_data
 }	t_data;
 
 //checker.c
-int		finished_meals(t_data *data);
+//int		finished_meals(t_data *data);
 int		check_death(t_data *data);
 int 	check_meals(t_data *data);
 void	monitor(t_data *data);
@@ -69,6 +70,7 @@ long	ft_atol(const char *str);
 void	parse_input(int argc, char **argv);
 
 //routine.c
+int		loop_checker(t_data *data);	
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
