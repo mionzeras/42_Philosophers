@@ -6,12 +6,12 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:43:48 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 21:06:05 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:24:43 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <stdio.h> //printf
 # include <stdlib.h> //malloc, free
@@ -23,6 +23,7 @@
 
 # define RST "\033[0m"
 # define R "\033[1;31m"
+# define G "\033[1;32m"
 # define Y "\033[1;33m"
 # define MAX_PHILOS 200
 
@@ -40,13 +41,13 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int		nbr_philos;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		max_meals;
-	int		death_full;
-	long	start_time;
+	int				nbr_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				max_meals;
+	int				death_full;
+	long			start_time;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal;
@@ -55,12 +56,12 @@ typedef struct s_data
 }	t_data;
 
 //checker.c
-//int		finished_meals(t_data *data);
 int		check_death(t_data *data);
-int 	check_meals(t_data *data);
-void	monitor(t_data *data);
+int		check_meals(t_data *data);
+void	*monitor_thread(void *arg);
 
 //init.c
+int		init_threads(t_data *data);
 int		init_mutexes(t_data *data);
 int		init_philos(t_data *data);
 int		init_data(t_data *data, char **argv);
@@ -77,7 +78,7 @@ void	eating(t_philo *philo);
 void	*routine(void *arg);
 
 //utils.c
-void	message(t_philo *philo, char *str);
+void	message(t_philo *philo, char *str, char color);
 int		ft_usleep(long time);
 long	get_time(void);
 int		free_program(t_data *data);

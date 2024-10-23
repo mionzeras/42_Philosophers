@@ -6,26 +6,26 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:43:56 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:33:00 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:33:44 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool is_digit(char c)
+static	bool	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-static bool is_space(char c)
+static	bool	is_space(char c)
 {
 	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
-long ft_atol(const char *str)
+long	ft_atol(const char *str)
 {
-	int i;
-	long res;
+	int		i;
+	long	res;
 
 	i = 0;
 	res = 0;
@@ -45,10 +45,10 @@ long ft_atol(const char *str)
 	return (res);
 }
 
-static bool check_input(char **argv)
+static	bool	check_input(char **argv)
 {
-	int i;
-	long nb;
+	int		i;
+	long	nb;
 
 	i = 1;
 	while (argv[i])
@@ -61,7 +61,7 @@ static bool check_input(char **argv)
 	return (true);
 }
 
-void parse_input(int argc, char **argv)
+void	parse_input(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{

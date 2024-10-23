@@ -6,12 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:28:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 21:06:57 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:34:35 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	loop_checker(t_data *data)
 {
@@ -21,25 +20,25 @@ int	loop_checker(t_data *data)
 	return (pthread_mutex_unlock(&data->dead_lock), 0);
 }
 
-void thinking(t_philo *philo)
+void	thinking(t_philo *philo)
 {
-	message(philo, "is thinking");
+	message(philo, "is thinking", 0);
 }
 
-void sleeping(t_philo *philo)
+void	sleeping(t_philo *philo)
 {
-	message(philo, "is sleeping");
+	message(philo, "is sleeping", 0);
 	ft_usleep(philo->data->time_to_sleep);
 }
 
-void eating(t_philo *philo)
+void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->left_fork_id]);
-	message(philo, "has taken a fork");
+	message(philo, "has taken a fork", 0);
 	pthread_mutex_lock(&philo->data->forks[philo->right_fork_id]);
-	message(philo, "has taken a fork");
+	message(philo, "has taken a fork", 0);
 	philo->eating = 1;
-	message(philo, "is eating");
+	message(philo, "is eating", 103);
 	pthread_mutex_lock(&philo->data->meal);
 	philo->qtd_meals++;
 	philo->last_meal = get_time();
@@ -50,12 +49,12 @@ void eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->forks[philo->left_fork_id]);
 }
 
-void *routine(void *arg)
+void	*routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0) 
+	if (philo->id % 2 == 0)
 		ft_usleep(100);
 	while (!loop_checker(philo->data))
 	{

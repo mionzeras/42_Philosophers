@@ -6,30 +6,35 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:59:19 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/21 20:46:01 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:30:56 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int init_mutexes(t_data *data)
+int	init_threads(t_data *data)
 {
-	int i;
+	int			i;
+	t_philo		*philos;
+	pthread_t	monitor;
 
 	i = -1;
+	philos = data->philos;
 	while (++i < data->nbr_philos)
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (-1);
-	if (pthread_mutex_init(&data->write, NULL) != 0)
+	{
+		if (pthread_create(&philos[i].thread, NULL, routine, &philos[i]) != 0)
+			return (free(data->forks), free(data->philos), -1);
+	}
+	if (pthread_create(&monitor, NULL, monitor_thread, data) != 0)
 		return (-1);
-	if (pthread_mutex_init(&data->meal, NULL) != 0)
-		return (-1);
-	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
-		return (-1);
+	i = -1;
+	while (++i < data->nbr_philos)
+		pthread_join(philos[i].thread, NULL);
+	pthread_join(monitor, NULL);
 	return (0);
 }
 
-int init_philos(t_data *data)
+int	init_philos(t_data *data)
 {
 	int		i;
 	t_philo	*philos;
@@ -49,15 +54,28 @@ int init_philos(t_data *data)
 		philos[i].right_fork_id = (i + 1) % data->nbr_philos;
 		philos[i].last_meal = data->start_time;
 		philos[i].data = data;
-		if (pthread_create(&philos[i].thread, NULL, routine, &philos[i]) != 0)
-			return (free(data->forks), free(data->philos), -1);
-		if (pthread_detach(philos[i].thread) != 0)
-			return (free(data->forks), free(data->philos), -1);
 	}
 	return (0);
 }
 
-int init_data(t_data *data, char **argv)
+int	init_mutexes(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nbr_philos)
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+			return (-1);
+	if (pthread_mutex_init(&data->write, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&data->meal, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&data->dead_lock, NULL) != 0)
+		return (-1);
+	return (0);
+}
+
+int	init_data(t_data *data, char **argv)
 {
 	data->nbr_philos = ft_atol(argv[1]);
 	if (data->nbr_philos > MAX_PHILOS)
