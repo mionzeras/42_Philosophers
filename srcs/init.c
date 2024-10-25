@@ -6,11 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:59:19 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/23 15:30:56 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:40:58 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 int	init_threads(t_data *data)
 {

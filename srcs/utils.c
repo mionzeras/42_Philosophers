@@ -6,15 +6,16 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:51:17 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/23 15:35:34 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 15:41:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 void	message(t_philo *philo, char *str, char color)
 {
 	pthread_mutex_lock(&philo->data->write);
+	pthread_mutex_lock(&philo->data->dead_lock);
 	if (philo->data->death_full == 0)
 	{
 		if (color == 'r')
@@ -30,6 +31,7 @@ void	message(t_philo *philo, char *str, char color)
 			printf("%ld %d %s\n", get_time() - philo->data->start_time,
 				philo->id, str);
 	}
+	pthread_mutex_unlock(&philo->data->dead_lock);
 	pthread_mutex_unlock(&philo->data->write);
 }
 
@@ -55,7 +57,7 @@ int	free_program(t_data *data)
 {
 	int	i;
 
-	ft_usleep(2000);
+	ft_usleep(1000);
 	pthread_mutex_destroy(&data->write);
 	pthread_mutex_destroy(&data->meal);
 	pthread_mutex_destroy(&data->dead_lock);

@@ -6,11 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:54:28 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/23 15:31:28 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:38:54 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 int	main(int argc, char **argv)
 {

@@ -6,11 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:43:56 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/23 15:33:44 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 16:02:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 static	bool	is_digit(char c)
 {
@@ -56,6 +56,8 @@ static	bool	check_input(char **argv)
 		nb = ft_atol(argv[i]);
 		if (nb > INT_MAX)
 			exit_error("Error: Number greater than INT_MAX");
+		if (nb <= 0)
+			return (false);
 		i++;
 	}
 	return (true);
@@ -75,5 +77,5 @@ void	parse_input(int argc, char **argv)
 			exit_error("Error: Number of meals must be greater than 0");
 	}
 	if (!check_input(argv))
-		exit_error("Error: Arguments must be positive integers");
+		exit_error("Error: Arguments must be positive integers greater than 0");
 }

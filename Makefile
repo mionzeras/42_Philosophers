@@ -6,14 +6,14 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/10/16 14:49:48 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/10/25 15:42:56 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Setup
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I includes -pthread
+CFLAGS = -Wall -Wextra -Werror -g -I includes -pthread -fsanitize=thread
 SRC = srcs/checker.c srcs/init.c srcs/main.c srcs/parsing.c \
 srcs/routine.c srcs/utils.c
 

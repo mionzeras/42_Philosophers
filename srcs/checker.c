@@ -6,11 +6,19 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:51:05 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/23 15:39:50 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 15:36:22 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
+
+int	loop_checker(t_data *data)
+{
+	pthread_mutex_lock(&data->dead_lock);
+	if (data->death_full == 1)
+		return (pthread_mutex_unlock(&data->dead_lock), 1);
+	return (pthread_mutex_unlock(&data->dead_lock), 0);
+}
 
 int	check_death(t_data *data)
 {
@@ -19,6 +27,7 @@ int	check_death(t_data *data)
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
+		pthread_mutex_lock(&data->meal);
 		if (get_time() - data->philos[i].last_meal > data->time_to_die
 			&& data->philos[i].eating == 0)
 		{
@@ -26,8 +35,10 @@ int	check_death(t_data *data)
 			pthread_mutex_lock(&data->dead_lock);
 			data->death_full = 1;
 			pthread_mutex_unlock(&data->dead_lock);
+			pthread_mutex_unlock(&data->meal);
 			return (-1);
 		}
+		pthread_mutex_unlock(&data->meal);
 	}
 	return (0);
 }
