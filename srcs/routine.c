@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:28:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/25 16:04:16 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 16:54:42 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	*routine(void *arg)
 	{
 		if (philo->data->nbr_philos == 1)
 		{
+			message(philo, "has taken a fork", 0);
 			ft_usleep(philo->data->time_to_die);
 			return (0);
 		}
