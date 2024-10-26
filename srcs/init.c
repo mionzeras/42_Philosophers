@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:59:19 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/25 14:40:58 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/26 00:27:53 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	init_philos(t_data *data)
 	while (++i < data->nbr_philos)
 	{
 		philos[i].id = i + 1;
-		philos[i].eating = 0;
 		philos[i].qtd_meals = 0;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % data->nbr_philos;

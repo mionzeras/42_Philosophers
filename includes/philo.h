@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:43:48 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/25 15:36:33 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/26 00:27:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 typedef struct s_philo
 {
 	int				id;
-	int				eating;
 	int				qtd_meals;
 	int				left_fork_id;
 	int				right_fork_id;
@@ -69,8 +68,8 @@ int		init_data(t_data *data, char **argv);
 
 //parsing.c
 long	ft_atol(const char *str);
-void	parse_input(int argc, char **argv);
 
+void	parse_input(int argc, char **argv);
 //routine.c
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);

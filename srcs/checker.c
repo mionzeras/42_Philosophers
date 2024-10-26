@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:51:05 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/25 15:36:22 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:23:32 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int	check_death(t_data *data)
 	while (++i < data->nbr_philos)
 	{
 		pthread_mutex_lock(&data->meal);
-		if (get_time() - data->philos[i].last_meal > data->time_to_die
-			&& data->philos[i].eating == 0)
+		if (get_time() - data->philos[i].last_meal > data->time_to_die)
 		{
 			message(&data->philos[i], "died", 114);
 			pthread_mutex_lock(&data->dead_lock);
